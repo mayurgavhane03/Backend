@@ -1,11 +1,28 @@
+// controllers/movieController.js
+const CryptoJS = require('crypto-js');
 const Movie = require('../Models/Movie');
+
+const secretKey = 'MNMN0808';
+
+// Decrypt function
+function decryptData(encryptedData, secretKey) {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+}
+
+// Encrypt function
+function encryptData(data, secretKey) {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
+}
 
 // Create a new movie
 const createMovie = async (req, res) => {
   try {
-    const movie = new Movie(req.body);
+    const decryptedData = decryptData(req.body.data, secretKey);
+    const movie = new Movie(decryptedData);
     await movie.save();
-    res.status(201).json(movie);
+    const encryptedResponse = encryptData(movie, secretKey);
+    res.status(201).json({ data: encryptedResponse });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -15,7 +32,8 @@ const createMovie = async (req, res) => {
 const getAllMovies = async (req, res) => {
   try {
     const movies = await Movie.find();
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -25,7 +43,8 @@ const getAllMovies = async (req, res) => {
 const getMoviesByType = async (req, res) => {
   try {
     const movies = await Movie.find({ type: req.params.type });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -35,7 +54,8 @@ const getMoviesByType = async (req, res) => {
 const getMoviesByRating = async (req, res) => {
   try {
     const movies = await Movie.find({ imdbRating: { $gte: Number(req.params.rating) } });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -45,7 +65,8 @@ const getMoviesByRating = async (req, res) => {
 const getMoviesByTitle = async (req, res) => {
   try {
     const movies = await Movie.find({ title: { $regex: req.params.title, $options: 'i' } });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -55,7 +76,8 @@ const getMoviesByTitle = async (req, res) => {
 const getMoviesByLanguage = async (req, res) => {
   try {
     const movies = await Movie.find({ languages: req.params.language });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -66,7 +88,8 @@ const getMoviesByQuality = async (req, res) => {
   try {
     const qualityField = `allInOne.${req.params.quality}`;
     const movies = await Movie.find({ [qualityField]: { $exists: true } });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -76,7 +99,8 @@ const getMoviesByQuality = async (req, res) => {
 const getMoviesByGenre = async (req, res) => {
   try {
     const movies = await Movie.find({ genres: req.params.genre });
-    res.json(movies);
+    const encryptedResponse = encryptData(movies, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -89,7 +113,8 @@ const getMovieById = async (req, res) => {
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
-    res.json(movie);
+    const encryptedResponse = encryptData(movie, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -98,11 +123,13 @@ const getMovieById = async (req, res) => {
 // Update a movie
 const updateMovie = async (req, res) => {
   try {
-    const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const decryptedData = decryptData(req.body.data, secretKey);
+    const movie = await Movie.findByIdAndUpdate(req.params.id, decryptedData, { new: true, runValidators: true });
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
-    res.json(movie);
+    const encryptedResponse = encryptData(movie, secretKey);
+    res.json({ data: encryptedResponse });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
