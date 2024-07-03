@@ -13,7 +13,9 @@ const movieSchema = new mongoose.Schema({
   allInOne: {
     '480p': { url: String, size: String },
     '720p': { url: String, size: String },
-    '1080p': { url: String, size: String }
+    '720p 10 Bit': { url: String, size: String },
+    '1080p': { url: String, size: String },
+    '1080p 10 Bit': { url: String, size: String }
   },
   episodes: [{
     title: { type: String },
