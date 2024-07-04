@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  type: { type: String, enum: ['movie', 'series','animation','18','k-drama'], required: true },
+  type: { type: String, enum: ['movie', 'series','anime','18','k-drama','netflix','amazon'], required: true },
   imdbRating: { type: Number, min: 0, max: 10 },
   directors: { type: [String], required: true },
   stars: { type: [String], required: true },
@@ -13,7 +13,9 @@ const movieSchema = new mongoose.Schema({
   allInOne: {
     '480p': { url: String, size: String },
     '720p': { url: String, size: String },
-    '1080p': { url: String, size: String }
+    '720p 10 Bit': { url: String, size: String },
+    '1080p': { url: String, size: String },
+    '1080p 10 Bit': { url: String, size: String }
   },
   episodes: [{
     title: { type: String },

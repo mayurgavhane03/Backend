@@ -14,7 +14,21 @@ connectDB();
 
 // Init Middleware
 app.use(bodyParser.json());
-app.use(cors());
+
+const allowedOrigins = ['http://localhost:5173', 'http://oceanofmovies.com','https://oceanofmovies.com' ];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Why bro why u are tryping to get my data 😤 '));
+    }
+  },
+  optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+};
+
+app.use(cors(corsOptions));
 
 // Define Routes
 app.use('/api/movies', movieRoutes);

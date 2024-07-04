@@ -18,11 +18,9 @@ function encryptData(data, secretKey) {
 // Create a new movie
 const createMovie = async (req, res) => {
   try {
-    const decryptedData = decryptData(req.body.data, secretKey);
-    const movie = new Movie(decryptedData);
+    const movie = new Movie(req.body);
     await movie.save();
-    const encryptedResponse = encryptData(movie, secretKey);
-    res.status(201).json({ data: encryptedResponse });
+    res.status(201).json(movie);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -119,21 +117,19 @@ const getMovieById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 // Update a movie
 const updateMovie = async (req, res) => {
   try {
-    const decryptedData = decryptData(req.body.data, secretKey);
-    const movie = await Movie.findByIdAndUpdate(req.params.id, decryptedData, { new: true, runValidators: true });
+    const movie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
-    const encryptedResponse = encryptData(movie, secretKey);
-    res.json({ data: encryptedResponse });
+    res.json(movie);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 // Delete a movie
 const deleteMovie = async (req, res) => {
