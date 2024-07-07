@@ -15,7 +15,7 @@ connectDB();
 // Init Middleware
 app.use(bodyParser.json());
 
-const allowedOrigins = ['http://localhost:5173', 'http://oceanofmovies.com','https://oceanofmovies.com' ];
+const allowedOrigins = ['http://localhost:5173','http://localhost:3000', 'http://oceanofmovies.com','https://oceanofmovies.com' ];
 
 const corsOptions = {
   origin: (origin, callback) => {
