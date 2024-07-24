@@ -26,7 +26,8 @@ const movieSchema = new mongoose.Schema({
     }
   }],
   createdAt: { type: Date, default: Date.now },
-}, { timestamps: true });
+  updatedAt: { type: Date, default: Date.now }
+});
 // Set default values for fields
 movieSchema.pre('save', function (next) {
   if (!this.allInOne) {
@@ -35,6 +36,7 @@ movieSchema.pre('save', function (next) {
   if (!this.episodes) {
     this.episodes = [];
   }
+  this.updatedAt = Date.now(); // Update the updatedAt field
   next();
 });
 
