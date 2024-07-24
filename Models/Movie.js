@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  type: { type: String, enum: ['movie', 'series', 'anime', '18', 'k-drama', 'netflix', 'amazon'], required: true },
+  type: { type: String, enum: ['movie', 'series','anime','18','k-drama','netflix','amazon'], required: true },
   imdbRating: { type: String, min: 0, max: 10 },
   directors: { type: [String], required: true },
   stars: { type: [String], required: true },
@@ -28,15 +28,16 @@ const movieSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
-// Set default values for fields
-movieSchema.pre('save', function (next) {
-  if (!this.allInOne) {
-    this.allInOne = {};
-  }
-  if (!this.episodes) {
-    this.episodes = [];
-  }
-  this.updatedAt = Date.now(); // Update the updatedAt field
+
+// Middleware to set the updatedAt field before each save
+movieSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
+});
+
+// Middleware to set the updatedAt field before each update
+movieSchema.pre('findOneAndUpdate', function(next) {
+  this.set({ updatedAt: Date.now() });
   next();
 });
 
