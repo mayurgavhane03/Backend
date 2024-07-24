@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  type: { type: String, enum: ['movie', 'series','anime','18','k-drama','netflix','amazon'], required: true },
+  type: { type: String, enum: ['movie', 'series', 'anime', '18', 'k-drama', 'netflix', 'amazon'], required: true },
   imdbRating: { type: String, min: 0, max: 10 },
   directors: { type: [String], required: true },
   stars: { type: [String], required: true },
@@ -26,7 +26,7 @@ const movieSchema = new mongoose.Schema({
     }
   }],
   createdAt: { type: Date, default: Date.now, immutable: true },
-});
+}, { timestamps: true });
 
 // Set default values for fields
 movieSchema.pre('save', function (next) {
