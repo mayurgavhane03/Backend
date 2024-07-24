@@ -25,9 +25,8 @@ const movieSchema = new mongoose.Schema({
       '1080p': { type: String }
     }
   }],
-  { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
 }, { timestamps: true });
-
 // Set default values for fields
 movieSchema.pre('save', function (next) {
   if (!this.allInOne) {
