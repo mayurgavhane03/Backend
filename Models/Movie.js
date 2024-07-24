@@ -25,7 +25,7 @@ const movieSchema = new mongoose.Schema({
       '1080p': { type: String }
     }
   }],
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now, immutable: true },
 });
 
 // Set default values for fields
