@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
@@ -13,16 +12,24 @@ const app = express();
 connectDB();
 
 // Init Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
-const allowedOrigins = ['http://localhost:5173','http://localhost:3000', 'http://oceanofmovies.tech','d14e5w6ohl9s1r.cloudfront.net' ,'https://d14e5w6ohl9s1r.cloudfront.net','http://ec2-54-167-80-47.compute-1.amazonaws.com:3000' ,'https://oceanofmovies.tech'];
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://oceanofmovies.tech',
+  'http://d14e5w6ohl9s1r.cloudfront.net',
+  'https://d14e5w6ohl9s1r.cloudfront.net',
+  'http://ec2-54-167-80-47.compute-1.amazonaws.com:3000',
+  'https://oceanofmovies.tech'
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('Why bro why u are tryping to get my data 😤 '));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   optionsSuccessStatus: 200 // Some legacy browsers choke on 204
