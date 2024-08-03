@@ -21,9 +21,9 @@ const allowedOrigins = [
   'http://d14e5w6ohl9s1r.cloudfront.net',
   'https://d14e5w6ohl9s1r.cloudfront.net',
   'http://ec2-54-167-80-47.compute-1.amazonaws.com:3000',
-  'https://oceanofmovies.tech'
-  'https://mayurgavhane.admin.oceanofmovies.tech'
-   'http://localhost:4000',
+  'https://oceanofmovies.tech',
+  'https://mayurgavhane.admin.oceanofmovies.tech',
+  'http://localhost:4000',
 ];
 
 const corsOptions = {
