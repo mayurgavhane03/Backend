@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   title: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  type: { type: String, enum: ['movie', 'series','anime','18','kdrama','netflix','amazon'], required: true },
+  type: { type: String, enum: ['movie', 'series','anime','18','kdrama','netflix','amazon','bollywood'], required: true },
   imdbRating: { type: String, min: 0, max: 10 },
   directors: { type: [String], required: true },
   stars: { type: [String], required: true },
